@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
+  <title>Bugges Verden</title>
+  <style>
+    * { margin: 0; padding: 0; }
+    body { background: #000; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
+    canvas.emscripten { display: block; cursor: none; }
+    #loading { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; font-family: sans-serif; font-size: 1.5em; }
+  </style>
+</head>
+<body>
+  <div id="loading">Loading...</div>
+  <canvas class="emscripten" id="canvas" oncontextmenu="event.preventDefault()" tabindex="0"></canvas>
+  <script>
+    // Ensure canvas always has keyboard focus
+    var c = document.getElementById('canvas');
+    c.focus();
+    c.addEventListener('click', function() { c.focus(); });
+    document.addEventListener('keydown', function(e) { if(e.key>='1'&&e.key<='9') e.preventDefault(); });
+
+    var Module = {
+      canvas: c,
+      onRuntimeInitialized: function() {
+        document.getElementById('loading').style.display = 'none';
+        c.focus();
+      }
+    };
+  </script>
+  <script src="bugges_verden.js"></script>
+</body>
+</html>
