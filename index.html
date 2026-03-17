@@ -32,20 +32,13 @@
     c.focus();
     c.addEventListener('click', function() { c.focus(); });
     document.addEventListener('keydown', function(e) { if(e.key>='1'&&e.key<='9') e.preventDefault(); });
-    function sendKey(code, keyCode, down) {
-      var ev = new KeyboardEvent(down ? 'keydown' : 'keyup', {
-        code: code, key: code, keyCode: keyCode, which: keyCode, bubbles: true, cancelable: true
-      });
-      document.dispatchEvent(ev);
-      window.dispatchEvent(ev);
-    }
+    window.mobileArrow = 0;
     ['left','right'].forEach(function(dir) {
       var btn = document.getElementById('arrow-' + dir);
-      var code = dir === 'left' ? 'ArrowLeft' : 'ArrowRight';
-      var kc = dir === 'left' ? 37 : 39;
-      btn.addEventListener('touchstart', function(e) { e.preventDefault(); sendKey(code, kc, true); }, { passive: false });
-      btn.addEventListener('touchend', function(e) { e.preventDefault(); sendKey(code, kc, false); }, { passive: false });
-      btn.addEventListener('touchcancel', function(e) { sendKey(code, kc, false); });
+      var val = dir === 'left' ? -1 : 1;
+      btn.addEventListener('touchstart', function(e) { e.preventDefault(); window.mobileArrow = val; }, { passive: false });
+      btn.addEventListener('touchend', function(e) { e.preventDefault(); window.mobileArrow = 0; }, { passive: false });
+      btn.addEventListener('touchcancel', function(e) { window.mobileArrow = 0; });
     });
     var Module = {
       canvas: c,
