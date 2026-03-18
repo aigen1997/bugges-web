@@ -4,10 +4,14 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no">
   <title>Bugges Verden</title>
+  <link rel="manifest" href="manifest.json">
+  <meta name="theme-color" content="#000000">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
   <style>
     * { margin: 0; padding: 0; }
     body { background: #000; overflow: hidden; display: flex; justify-content: center; align-items: center; height: 100vh; }
-    canvas.emscripten { display: block; cursor: none; }
+    canvas.emscripten { display: block; cursor: none; outline: none; border: none; }
     #loading { position: fixed; top: 50%; left: 50%; transform: translate(-50%, -50%); color: #fff; font-family: sans-serif; font-size: 1.5em; }
     .arrow-btn {
       display: none; position: fixed; top: 0; width: 80px; height: 100%;
@@ -30,7 +34,13 @@
   <script>
     var c = document.getElementById('canvas');
     c.focus();
-    c.addEventListener('click', function() { c.focus(); });
+    c.addEventListener('click', function() {
+      c.focus();
+      if (!document.fullscreenElement) {
+        (document.body.requestFullscreen || document.body.webkitRequestFullscreen || function(){}).call(document.body);
+        screen.orientation && screen.orientation.lock && screen.orientation.lock('landscape').catch(function(){});
+      }
+    });
     document.addEventListener('keydown', function(e) { if(e.key>='1'&&e.key<='9') e.preventDefault(); });
     window.mobileArrow = 0;
     ['left','right'].forEach(function(dir) {
